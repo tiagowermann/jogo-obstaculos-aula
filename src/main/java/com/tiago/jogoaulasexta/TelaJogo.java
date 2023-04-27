@@ -43,18 +43,18 @@ public class TelaJogo extends JFrame implements Runnable {
 
     public TelaJogo() {
         initComponents();
+        setSize(800, 600);
+        setResizable(false);
 
         pontosLabel = new JLabel("Pontos: 0");
         pontosLabel.setBounds(10, 10, 100, 20);
         add(pontosLabel);
 
-        setSize(800, 600);
-
         new Thread(this).start();
 
         for (int i = 0; i < MAX; i++) {
 
-            if (vetX[i] + lado > OBSTACLE_X &&  vetX[i] + lado < OBSTACLE_X + OBSTACLE_WIDTH
+            if (vetX[i] + lado > OBSTACLE_X && vetX[i] + lado < OBSTACLE_X + OBSTACLE_WIDTH
                     && vetY[i] > OBSTACLE_Y && vetY[i] < OBSTACLE_Y + OBSTACLE_HEIGHT) {
                 lado = -MAX_VEL_BOSS;
             }
@@ -88,6 +88,11 @@ public class TelaJogo extends JFrame implements Runnable {
                         }
                         if (bossX < 1) {
                             lado = MAX_VEL_BOSS;
+                        }
+                        // Verifica se o boss atingiu a lateral da tela
+                        if (bossX + lado > getWidth() || bossX + lado < 0) {
+                            bossY += 70;
+                            lado = -lado;
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -142,8 +147,7 @@ public class TelaJogo extends JFrame implements Runnable {
                     playerY = OBSTACLE3_Y + OBSTACLE3_HEIGHT;
                 }
             }
-            
-            
+
             if (vetX[i] < OBSTACLE_X + OBSTACLE_WIDTH && vetX[i] + WIDTH > OBSTACLE_X && vetY[i] < OBSTACLE_Y + OBSTACLE_HEIGHT && vetY[i] + HEIGHT > OBSTACLE_Y) {
                 // Colisão com o obstáculo 1
                 if (vetY[i] < OBSTACLE_Y + OBSTACLE_HEIGHT / 2) {
@@ -168,8 +172,7 @@ public class TelaJogo extends JFrame implements Runnable {
                     vetY[i] = OBSTACLE3_Y + OBSTACLE3_HEIGHT;
                 }
             }
-         
-            
+
             if (bossX < OBSTACLE_X + OBSTACLE_WIDTH && bossX + WIDTH > OBSTACLE_X && bossY < OBSTACLE_Y + OBSTACLE_HEIGHT && bossY + HEIGHT > OBSTACLE_Y) {
                 // Colisão com o obstáculo 1
                 if (bossY < OBSTACLE_Y + OBSTACLE_HEIGHT / 2) {
@@ -194,8 +197,6 @@ public class TelaJogo extends JFrame implements Runnable {
                     bossY = OBSTACLE3_Y + OBSTACLE3_HEIGHT;
                 }
             }
-            
-            
 
             if (Math.random() > 0.9) {
                 if (playerX > vetX[i]) {
